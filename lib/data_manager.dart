@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/data_model.dart';
+import 'package:trackup/data_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

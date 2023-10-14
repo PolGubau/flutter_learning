@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data_manager.dart';
-import 'package:flutter_application_1/data_model.dart';
+import 'package:trackup/data_manager.dart';
+import 'package:trackup/data_model.dart';
 
 class MenuPage extends StatelessWidget {
   final DataManager dataManager;
@@ -29,17 +29,18 @@ class MenuPage extends StatelessWidget {
                       ),
                     ),
                     ListView.builder(
+                      shrinkWrap: true, // to avoid double scroll
+                      physics: const ClampingScrollPhysics(),
                       itemCount: categories[index].products.length,
                       itemBuilder: (BuildContext context, int index2) {
+                        var product = categories[index].products[index2];
                         return ProductItem(
-                          product: categories[index].products[index2],
-                          onAddToCart: () {
-                            dataManager
-                                .cartAdd(categories[index].products[index2]);
+                          product: product,
+                          onAddToCart: (addedProduct) {
+                            dataManager.cartAdd(addedProduct);
                           },
                         );
                       },
-                      shrinkWrap: true,
                     ),
                   ],
                 );
@@ -70,8 +71,8 @@ class ProductItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            'assets/images/black_coffee.png',
+          Image.network(
+            product.imageUrl,
             width: double.infinity,
             fit: BoxFit.cover,
             height: 150,
@@ -99,7 +100,7 @@ class ProductItem extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    print('Add to cart');
+                    onAddToCart(product);
                   },
                   child: const Text('Add to cart'),
                 )
